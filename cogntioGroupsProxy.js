@@ -2,6 +2,7 @@ var AWS = require('aws-sdk');
 
 exports.handler = function(event, context, callback) 
 {
+
     var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();   
     var user =  event.cognitoSubNumber;
     var path =  event.queryPathParameters.thepath;
@@ -23,6 +24,11 @@ exports.handler = function(event, context, callback)
 
     if (splitpath.length == 1)
     {
+        if (!(event.httpmethod == "GET"))
+        {
+            callback("httpmethod not supported, please use GET");
+        }
+        
         var params = 
         {
             GroupName: group, /* required */
@@ -46,6 +52,11 @@ exports.handler = function(event, context, callback)
 
     if (splitpath.length ==2)
     {
+        if (!(event.httpmethod == "DELETE" || event.httpmethod == "POST"))
+        {
+            callback("httpmethod not supported, please use POST or DELETE");
+        }
+        
         var params = 
         {
             GroupName: group, 
